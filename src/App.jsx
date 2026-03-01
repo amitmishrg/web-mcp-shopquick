@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { registerWebMCPTools, unregisterWebMCPTools } from './clientMCP';
+import WebMCPChat from './WebMCPChat';
 
 const PRODUCTS = [
   { id: 1, name: 'Wireless Headphones', price: 79.99, emoji: '🎧' },
@@ -14,21 +15,29 @@ const PRODUCTS = [
 function App() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const cartRef = useRef([]);
+  cartRef.current = cart;
 
   function addToCart(product) {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item,
-        );
-      }
-      return [...prev, { ...product, qty: 1 }];
+      const next = existing
+        ? prev.map((item) =>
+            item.id === product.id ? { ...item, qty: item.qty + 1 } : item,
+          )
+        : [...prev, { ...product, qty: 1 }];
+      cartRef.current = next;
+      return next;
     });
   }
 
   const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    setCart((prev) => {
+      const next = prev.filter((item) => item.id !== id);
+      cartRef.current = next;
+      return next;
+    });
   };
 
   useEffect(() => {
@@ -43,6 +52,7 @@ function App() {
         removeFromCart(productId);
         return { success: true, removedId: productId };
       },
+      getCart: () => cartRef.current,
     });
     return () => unregisterWebMCPTools();
   }, []);
@@ -64,10 +74,20 @@ function App() {
     <div className="app">
       <header className="header">
         <h1>🛍️ ShopQuick</h1>
-        <button className="cart-btn" onClick={() => setCartOpen(true)}>
-          🛒 Cart
-          {totalItems > 0 && <span className="badge">{totalItems}</span>}
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <button
+            type="button"
+            className="cart-btn"
+            onClick={() => setChatOpen(true)}
+            title="Control cart via chat"
+          >
+            💬 Chat
+          </button>
+          <button className="cart-btn" onClick={() => setCartOpen(true)}>
+            🛒 Cart
+            {totalItems > 0 && <span className="badge">{totalItems}</span>}
+          </button>
+        </div>
       </header>
 
       <main className="products-grid">
@@ -93,6 +113,27 @@ function App() {
           );
         })}
       </main>
+
+      {chatOpen && (
+        <div
+          className="overlay"
+          onClick={() => setChatOpen(false)}
+          style={{ zIndex: 100 }}
+        >
+          <div
+            className="webmcp-chat-panel absolute left-1/2 top-1/2 flex h-[min(640px,90vh)] w-[min(420px,100vw-24px)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <WebMCPChat
+              products={PRODUCTS}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              getCart={() => cartRef.current}
+              onClose={() => setChatOpen(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {cartOpen && (
         <div className="overlay" onClick={() => setCartOpen(false)}>
