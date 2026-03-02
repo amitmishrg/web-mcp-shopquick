@@ -2,7 +2,8 @@
 
 A demo e-commerce app that exposes a **shopping cart as tools** via the browser’s [Web Model Context Protocol (WebMCP)](https://github.com/webmachinelearning/webmcp). Use the cart from an **in-page AI chat** (Vercel AI SDK + OpenAI) or from **external AI clients** (e.g. Cursor, MCP) that talk to the page through `navigator.modelContext`.
 
-![ShopQuick](https://img.shields.io/badge/WebMCP-demo-4f46e5)
+![ShopQuick](https://img.shields.io/badge/WebMCP-demo-4f46e5)  
+**Live:** [amitmishrg.github.io/web-mcp-shopquick](https://amitmishrg.github.io/web-mcp-shopquick/)
 
 ## What is WebMCP?
 
@@ -32,8 +33,8 @@ This project shows:
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/web-mcp.git
-cd web-mcp
+git clone https://github.com/amitmishrg/web-mcp-shopquick.git
+cd web-mcp-shopquick
 
 # Install dependencies
 npm install
@@ -43,6 +44,17 @@ npm run dev
 ```
 
 Open the app in your browser (e.g. `http://localhost:5173`).
+
+## Deploy (GitHub Pages)
+
+The repo includes a GitHub Actions workflow that deploys the app to **GitHub Pages** on every push to `main`.
+
+1. In your GitHub repo, go to **Settings** → **Pages**.
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Push to `main` (or merge a PR). The workflow builds the app and deploys it.
+4. The site will be live at **`https://amitmishrg.github.io/web-mcp-shopquick/`**.
+
+The build uses `VITE_BASE_PATH=<repo name>` so assets and routing work correctly on GitHub Pages. Local dev is unchanged (`npm run dev` uses base `/`).
 
 ## How to use
 
