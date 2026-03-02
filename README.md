@@ -25,7 +25,7 @@ This project shows:
 ## Prerequisites
 
 - **Node.js** 18+
-- **npm** (or pnpm / yarn)
+- **yarn**
 - For **in-page chat**: an [OpenAI API key](https://platform.openai.com/api-keys) (entered in the chat UI).
 - For **external WebMCP**: a browser that supports `navigator.modelContext` (e.g. [Chrome with the WebMCP flag](https://chromestatus.com/feature/5191746952609792), or a polyfill like [@mcp-b/global](https://www.npmjs.com/package/@mcp-b/global)).
 
@@ -37,10 +37,10 @@ git clone https://github.com/amitmishrg/web-mcp-shopquick.git
 cd web-mcp-shopquick
 
 # Install dependencies
-npm install
+yarn
 
 # Run the dev server
-npm run dev
+yarn dev
 ```
 
 Open the app in your browser (e.g. `http://localhost:5173`).
@@ -54,7 +54,7 @@ The repo includes a GitHub Actions workflow that deploys the app to **GitHub Pag
 3. Push to `main` (or merge a PR). The workflow builds the app and deploys it.
 4. The site will be live at **`https://amitmishrg.github.io/web-mcp-shopquick/`**.
 
-The build uses `VITE_BASE_PATH=<repo name>` so assets and routing work correctly on GitHub Pages. Local dev is unchanged (`npm run dev` uses base `/`).
+The build uses `VITE_BASE_PATH=<repo name>` so assets and routing work correctly on GitHub Pages. Local dev is unchanged (`yarn dev` uses base `/`).
 
 ## How to use
 
@@ -106,12 +106,12 @@ src/
 
 ## Scripts
 
-| Command     | Description                |
-|------------|----------------------------|
-| `npm run dev`    | Start Vite dev server      |
-| `npm run build`  | Production build           |
-| `npm run preview`| Preview production build    |
-| `npm run lint`   | Run ESLint                 |
+| Command       | Description                |
+|---------------|----------------------------|
+| `yarn dev`    | Start Vite dev server      |
+| `yarn build`  | Production build           |
+| `yarn preview`| Preview production build   |
+| `yarn lint`   | Run ESLint                 |
 
 ## Tech stack
 
